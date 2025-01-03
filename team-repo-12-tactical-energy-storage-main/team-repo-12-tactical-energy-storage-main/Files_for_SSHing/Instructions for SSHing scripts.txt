@@ -1,0 +1,10 @@
+Instructions for SSHing scripts
+
+- Download the zip file.
+- Right click on the file and extract to your C drive. The file you are sending it to should be "C:\Users\<firstname>.<lastname>
+- Once you have extracted all the documents, open your command line and make sure that your directory is "C:\Users\<firstname>.<lastname>
+- If this is your first time, run "wsl_download.bat" by typing "wsl_download.bat" into the command line and hit enter
+- then run "wsl_startup.bat" and hit enter
+- The rest is automated with limited user input.
+
+Feel free to reach out to me with questions at (609) 350-4365

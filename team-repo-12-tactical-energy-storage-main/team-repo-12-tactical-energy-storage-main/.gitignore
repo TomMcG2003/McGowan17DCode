@@ -1,0 +1,5 @@
+# Ignores all liscences
+*.dat
+# IDK what these files are
+.idea
+.pytest_cache

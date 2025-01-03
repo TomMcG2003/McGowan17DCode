@@ -1,0 +1,43 @@
+#! /bin/sh
+
+# Path to GDB macros file.  Customize for your site.
+GDBMACROS=$(dirname $0)/../misc/gdb-macros
+GDBMACROSPORT=$(dirname $0)/../misc/gdb-macros-with-port
+
+# Choose correct GDB.
+if command -v i386-elf-gdb >/dev/null 2>&1; then
+	GDB=i386-elf-gdb
+else
+	GDB=gdb
+fi
+
+# Run GDB.
+if test -f "$GDBMACROS"; then
+    # Edit gdbmacros file to use the correct port
+	if [ -n "${GDB_PORT+1}" ]; then
+        rm $GDBMACROSPORT
+        cat $GDBMACROS | sed "s/1234/$GDB_PORT/g" > $GDBMACROSPORT
+		chmod 700 $GDBMACROSPORT
+    else
+		echo "\n\nERROR: You must set the GDB_PORT environment variable to the port number you were assigned.\n\n"
+		echo "To do this, following these steps:"
+		echo " (1) Edit the .bashrc in your home directory to add:"
+		echo "\texport GDB_PORT=<port>"
+		echo "     where <port> is replaced by the port number you were assigned."
+		echo "     For example, if I were assigned the port number 1234, I would put:"
+		echo "     \texport GDB_PORT=1234"
+		echo "     in my .bashrc file."
+		echo " (2) Once you have edited your .bashrc, run 'source .bashrc' to make the change take effect."
+		echo " (3) You can then 'echo \$GDB_PORT' to verify that the value is correct."
+		echo " (4) Run the killall command to kill the Pintos instance that is awaiting the debugger's connection."
+		echo " (5) Repeat steps 2 and 3 in the window from which you ran Pintos.\n"
+		echo "At this point, you can retry running Pintos in debug mode.\n"
+		exit
+	fi
+
+	exec $GDB -x "$GDBMACROSPORT" "$@"
+else
+	echo "*** $GDBMACROS does not exist ***"
+	echo "*** Pintos GDB macros will not be available ***"
+	exec $GDB "$@"
+fi
